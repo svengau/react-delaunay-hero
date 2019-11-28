@@ -1,5 +1,7 @@
 # React Delaunay Hero
 
+![Sample React Delaunay Hero](/example.png)
+
 [![Build Status](https://travis-ci.org/svengau/react-delaunay-hero.svg?branch=master)](https://travis-ci.org/svengau/react-delaunay-hero)
 
 ## Purpose
@@ -38,6 +40,11 @@ import Hero from 'react-delaunay-hero';
 </DelaunayHero>
 
 ```
+
+## Documentation 
+
+You can find multiple samples on the [dedicated github page](https://svengau.github.io/react-delaunay-hero/).
+
 
 ## Thanks
 

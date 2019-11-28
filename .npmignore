@@ -1,0 +1,12 @@
+.history
+docs/
+dist/tests/
+src/
+tests/
+.travis.yml
+tsconfig.json
+tslint.json
+typings.d.ts
+example.png
+codecov.yml
+renovate.json

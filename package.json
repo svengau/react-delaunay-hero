@@ -1,0 +1,117 @@
+{
+  "name": "react-delaunay-hero",
+  "keywords": [
+    "react",
+    "delaunay",
+    "triangulation",
+    "triangle",
+    "hero",
+    "typescript"
+  ],
+  "version": "0.0.1",
+  "description": "A react component to display an Hero with a delaunay triangulation in background.",
+  "license": "MIT",
+  "author": "Sven Gaubert <svengau@gmail.com>",
+  "main": "./lib/bundle.umd.js",
+  "module": "./lib/index.js",
+  "jsnext:main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svengau/react-delaunay-hero.git"
+  },
+  "bugs": {
+    "url": "https://github.com/svengau/react-delaunay-hero/issues"
+  },
+  "homepage": "https://github.com/svengau/react-delaunay-hero#readme",
+  "scripts": {
+    "build:browser": "browserify ./lib/bundle.umd.js -o=./lib/bundle.js && npm run minify:browser",
+    "build": "tsc -p .",
+    "bundle": "rollup -c",
+    "clean": "rimraf lib/* coverage/*",
+    "coverage:upload": "codecov",
+    "deploy": "./scripts/deploy.sh",
+    "filesize": "npm run build && npm run build:browser && bundlesize",
+    "lint": "prettier --write 'src/**/*.{j,t}s*'",
+    "lint-staged": "lint-staged",
+    "minify:browser": "uglifyjs -c -m -o ./lib/bundle.min.js -- ./lib/bundle.js",
+    "postbuild": "npm run bundle",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prettier": "prettier --config .prettierrc",
+    "prettier:diff": "prettier --config .prettierrc --list-different \"src/**/*.{ts,tsx,js,jsx}\" || true",
+    "prettier:diff-with-error": "prettier --config .prettierrc --list-different \"src/**/*.{ts,tsx,js,jsx}\"",
+    "prettier:all": "yarn prettier --write \"./src/**/*.{ts,tsx,js,jsx}\" ",
+    "test": "jest",
+    "coverage": "npm run lint && jest --coverage",
+    "watch": "tsc -w -p .",
+    "check-types": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.tests.json",
+    "styleguidist:server": "styleguidist server",
+    "styleguidist:build": "styleguidist build"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "@types/react": "^16.9.13",
+    "@types/react-dom": "^16.9.4",
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.6",
+    "browserify": "16.5.0",
+    "bundlesize": "0.18.0",
+    "codecov": "3.6.1",
+    "jest": "24.9.0",
+    "lerna": "^3.19.0",
+    "lint-staged": "^9.5.0",
+    "pre-commit": "1.2.2",
+    "prettier": "1.18.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-docgen-typescript": "^1.16.0",
+    "react-dom": "^16.12.0",
+    "react-styleguidist": "^10.2.1",
+    "rimraf": "3.0.0",
+    "rollup": "^1.27.5",
+    "rollup-plugin-copy": "3.1.0",
+    "rollup-plugin-copy-assets": "2.0.1",
+    "rollup-plugin-local-resolve": "1.0.7",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "0.4.2",
+    "ts-jest": "^24.2.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "uglify-js": "^3.7.0",
+    "webpack": "^4.41.2"
+  },
+  "resolutions": {
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "23.6.0"
+  },
+  "bundlesize": [
+    {
+      "name": "react-delaunay-hero",
+      "path": "./lib/bundle.min.js",
+      "maxSize": "9.5 kb"
+    }
+  ],
+  "lint-staged": {
+    "*.ts*": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js*": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.json*": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "pre-commit": "lint-staged",
+  "dependencies": {
+    "delaunator": "^4.0.1",
+    "polished": "^3.4.2"
+  }
+}

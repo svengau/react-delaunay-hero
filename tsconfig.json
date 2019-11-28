@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "removeComments": false,
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "outDir": "lib",
+    "jsx": "react"
+  },
+  "include": ["src/*.ts", "src/*.tsx"],
+  "exclude": ["src/__tests__/*.ts"]
+}
