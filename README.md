@@ -28,8 +28,7 @@ import Hero from 'react-delaunay-hero';
 ....
 
 <DelaunayHero
-  height={400}
-  color="orange"
+  color="#ffa500"
   maxPoints={50}
   maxSpeed={0.6}
   minSpeed={0.5}
@@ -41,10 +40,9 @@ import Hero from 'react-delaunay-hero';
 
 ```
 
-## Documentation 
+## Documentation
 
 You can find multiple samples on the [dedicated github page](https://svengau.github.io/react-delaunay-hero/).
-
 
 ## Thanks
 

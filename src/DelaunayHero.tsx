@@ -6,6 +6,7 @@ import { lighten } from 'polished';
 interface colorCalculationOptions {
   triangleCenter: { x: number; y: number };
   triangleIndex: string;
+  triangleColor?: string;
   triangle: any;
   color: string;
   colorCaching: { [key: string]: any };
@@ -21,10 +22,12 @@ enum PresetDistribution {
 }
 enum PresetFillColor {
   gradient = 'gradient',
+  gradient_reverse = 'gradient_reverse',
   random = 'random',
 }
 enum PresetLineColor {
   gradient = 'gradient',
+  gradient_reverse = 'gradient_reverse',
 }
 
 interface IProps {
@@ -95,12 +98,12 @@ class DelaunayHero extends React.Component<IProps, IState> {
     width: '100%',
     height: '400',
     color: 'orange',
-    backgroundColor: 'white',
+    backgroundColor: null,
     borderColor: null,
     maxPoints: 50,
     maxSpeed: 0.6,
     minSpeed: 0.5,
-    lineWidth: 0.1,
+    lineWidth: 1,
     lineColor: null,
     fillColor: 'random',
     animate: false,
@@ -260,9 +263,38 @@ class DelaunayHero extends React.Component<IProps, IState> {
     color,
     colorCaching,
     canvasWidth,
+    ctx,
     canvasHeight,
   }) => {
-    return lighten(0.9 - triangleCenter.y / canvasHeight, color);
+    const alpha =
+      Math.round(Math.max(0, -0.2 + triangleCenter.y / canvasHeight) * 100) /
+      100;
+    const triangleColor = lighten(alpha, color);
+    if (triangleColor.startsWith('#fff')) {
+      return 'rgba(0, 0, 0, 0)';
+    }
+    return triangleColor;
+  };
+
+  fill_gradient_reverse = ({
+    triangleIndex,
+    triangleCenter,
+    triangle,
+    color,
+    colorCaching,
+    canvasWidth,
+    ctx,
+    canvasHeight,
+  }) => {
+    const alpha =
+      Math.round(Math.max(0, 1 - 0.2 - triangleCenter.y / canvasHeight) * 100) /
+      100;
+
+    const triangleColor = lighten(alpha, color);
+    if (triangleColor.startsWith('#fff')) {
+      return 'rgba(0, 0, 0, 0)';
+    }
+    return triangleColor;
   };
 
   fill_random = ({ triangleIndex, color, colorCaching }) => {
@@ -272,26 +304,16 @@ class DelaunayHero extends React.Component<IProps, IState> {
     return colorCaching[triangleIndex];
   };
 
-  line_gradient = ({
-    triangle,
-    color,
-    colorCaching,
-    canvasWidth,
-    canvasHeight,
-  }) => {
-    const index = `${triangle[0][4]}_${triangle[1][4]}_${triangle[2][4]}`;
-    const maxHeight = canvasHeight / 2;
-    if (
-      triangle[0][1] < maxHeight ||
-      triangle[1][1] < maxHeight ||
-      triangle[1][1] < maxHeight
-    ) {
-      return lighten(0.1 * Math.random(), color);
-    }
-    if (!colorCaching[index]) {
-      colorCaching[index] = lighten(0.1 * Math.random(), color);
-    }
-    return colorCaching[index];
+  line_random = ({ triangleColor }) => {
+    return triangleColor;
+  };
+
+  line_gradient = ({ triangleColor }) => {
+    return triangleColor;
+  };
+
+  line_gradient_reverse = ({ triangleColor }) => {
+    return triangleColor;
   };
 
   getCanvasSize = () => {
@@ -359,7 +381,11 @@ class DelaunayHero extends React.Component<IProps, IState> {
     // Paint the background context
     let ctx = canvas.getContext('2d');
     ctx.save();
-    ctx.fillStyle = backgroundColor;
+    if (backgroundColor) {
+      ctx.fillStyle = backgroundColor;
+    } else {
+      ctx.globalAlpha = 0.0;
+    }
     ctx.fillRect(0, 0, width, height);
     ctx.restore();
 
@@ -418,29 +444,35 @@ class DelaunayHero extends React.Component<IProps, IState> {
         triangleCenter,
         triangle,
         color,
+        ctx,
         canvasWidth,
         canvasHeight,
         colorCaching: this.colorCaching,
       };
+
+      let triangleColor = this[`fill_${fillColor}`]
+        ? this[`fill_${fillColor}`](colorArgs)
+        : typeof fillColor === 'function'
+        ? fillColor(colorArgs)
+        : this.fill_random(colorArgs);
+
+      const strokeColor = this[`line_${lineColor}`]
+        ? this[`line_${lineColor}`]({ ...colorArgs, triangleColor })
+        : typeof lineColor === 'function'
+        ? lineColor({ ...colorArgs, triangleColor })
+        : lineColor
+        ? lineColor
+        : triangleColor;
 
       ctx.beginPath();
       ctx.moveTo(triangle[0][0], triangle[0][1]);
       ctx.lineTo(triangle[1][0], triangle[1][1]);
       ctx.lineTo(triangle[2][0], triangle[2][1]);
       ctx.closePath();
+
       ctx.lineWidth = lineWidth;
-      ctx.strokeStyle = this.props[`line_${lineColor}`]
-        ? this.props[`line_${lineColor}`](colorArgs)
-        : typeof lineColor === 'function'
-        ? lineColor(colorArgs)
-        : lineColor;
-
-      ctx.fillStyle = this[`fill_${fillColor}`]
-        ? this[`fill_${fillColor}`](colorArgs)
-        : typeof fillColor === 'function'
-        ? fillColor(colorArgs)
-        : this.fill_random(colorArgs);
-
+      ctx.strokeStyle = strokeColor;
+      ctx.fillStyle = triangleColor;
       ctx.fill();
       ctx.save();
       ctx.stroke();
