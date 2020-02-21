@@ -1,3 +1,7 @@
+[![npm][npm]][npm-url]
+[![node][node]][node-url]
+[![downloads][downloads]][downloads-url]
+
 # React Delaunay Hero
 
 ![Sample React Delaunay Hero](/example.png)
@@ -47,3 +51,10 @@ You can find multiple samples on the [dedicated github page](https://svengau.git
 ## Thanks
 
 Setting up the project has been largely inspired by this wonderful [codepen](https://codepen.io/tibomahe/pen/KKPbzJy) project.
+
+[npm]: https://img.shields.io/npm/v/react-delaunay-hero.svg
+[npm-url]: https://npmjs.com/package/react-delaunay-hero
+[node]: https://img.shields.io/node/v/react-delaunay-hero.svg
+[node-url]: https://nodejs.org
+[downloads]: https://img.shields.io/npm/dt/react-delaunay-hero.svg
+[downloads-url]: https://npmjs.com/package/react-delaunay-hero
