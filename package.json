@@ -112,6 +112,6 @@
   "pre-commit": "lint-staged",
   "dependencies": {
     "delaunator": "^4.0.1",
-    "polished": "^3.4.2"
+    "polished": "^4.0.0"
   }
 }
